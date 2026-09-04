@@ -55,12 +55,13 @@ Generated Response
       │
       ▼
 Customer
-🧠 RAG Knowledge Base
+```
 
+## 🧠 RAG Knowledge Base
 The FAQ knowledge base is provided as a PDF.
 
 The ingestion workflow processes the PDF and converts its content into searchable vector representations.
-
+```
 FAQ PDF
    │
    ▼
@@ -80,11 +81,11 @@ OpenAI Embeddings
    │
    ▼
 Vector Store
+```
 
 When a customer sends a question, the AI Agent searches the vector store for relevant FAQ information.
 
-🔐 Grounded AI Responses
-
+## 🔐 Grounded AI Responses
 A major focus of this project is preventing the AI from making up business information.
 
 The AI Agent is instructed to:
@@ -103,7 +104,7 @@ the AI should not guess the business hours.
 
 This provides a safer approach for customer-support automation.
 
-🧪 Example
+## 🧪 Example
 Customer
 
 Do I need an appointment?
@@ -124,24 +125,31 @@ the system treats this as incomplete information rather than assuming those paym
 
 The AI instead tells the customer that the specific payment information is unavailable and recommends contacting the business.
 
-🛠️ Tech Stack
-n8n — Workflow automation and AI orchestration
-OpenAI — LLM and text embeddings
-Gmail — Customer email trigger and automated replies
-Google Drive — FAQ document storage
-Vector Store — Semantic FAQ retrieval
-PDF — Knowledge-base source
-RAG — Retrieval-Augmented Generation
-📁 Project Structure
+## 🛠️ Tech Stack
+
+- **n8n** — Workflow automation and AI orchestration
+- **OpenAI** — LLM and text embeddings
+- **Gmail** — Customer email trigger and automated replies
+- **Google Drive** — FAQ document storage
+- **Vector Store** — Semantic FAQ retrieval
+- **PDF** — Knowledge-base source
+- **RAG** — Retrieval-Augmented Generation
+
+## 📁 Project Structure
+
+```text
 ai-customer-support-agent/
 │
 ├── customer-care-workflow.json
 ├── faq-knowledge-base.json
 └── README.md
-customer-care-workflow.json
+```
+
+### `customer-care-workflow.json`
 
 Contains the main customer-support workflow:
 
+```text
 Gmail Trigger
      ↓
 AI Agent
@@ -151,51 +159,57 @@ FAQ Retrieval
 OpenAI
      ↓
 Gmail Reply
-faq-knowledge-base.json
+```
+
+### `faq-knowledge-base.json`
 
 Contains the workflow responsible for processing the FAQ PDF and inserting its content into the vector store.
 
-⚙️ Setup
-1. Import the workflows into n8n
+## ⚙️ Setup
+
+### 1. Import the workflows into n8n
 
 Import:
 
+```text
 customer-care-workflow.json
 faq-knowledge-base.json
+```
 
 into an n8n instance.
 
-2. Configure credentials
+### 2. Configure credentials
 
 Configure your own:
 
-Gmail credentials
-Google Drive credentials
-OpenAI credentials
+- Gmail credentials
+- Google Drive credentials
+- OpenAI credentials
 
 Credentials are intentionally not included in this repository.
 
-3. Add your business FAQ
+### 3. Add your business FAQ
 
 Replace the demonstration FAQ with the actual business knowledge base.
 
 Business-specific placeholders should be replaced with verified information such as:
 
-Business hours
-Payment methods
-Customer-support contact details
-Feedback channels
-Services
-Policies
-4. Process the FAQ
+- Business hours
+- Payment methods
+- Customer-support contact details
+- Feedback channels
+- Services
+- Policies
+
+### 4. Process the FAQ
 
 Run the FAQ knowledge-base workflow so the document is converted into searchable vector data.
 
-5. Activate the customer-support workflow
+### 5. Activate the customer-support workflow
 
 Once configured, incoming customer emails can be automatically processed and answered.
 
-⚠️ Current Limitations
+## ⚠️ Current Limitations
 
 The current implementation uses n8n's Simple Vector Store, which is suitable for experimentation and demonstration.
 
@@ -203,53 +217,42 @@ For a production deployment, a persistent vector database could be used instead.
 
 The current FAQ is also a demonstration knowledge base and contains placeholder business information that should be replaced before real-world deployment.
 
-🚀 Future Improvements
-Persistent vector database such as PostgreSQL/PGVector, Qdrant, or Pinecone
-WhatsApp customer support
-Website chat integration
-Human escalation for complex queries
-Complaint and refund routing
-Business-hours awareness
-Customer conversation history
-Analytics and support dashboards
-Multi-business / multi-tenant support
-Business-specific configuration stored outside the FAQ
-Automated FAQ document updates
-🎓 What This Project Demonstrates
+## 🚀 Future Improvements
+
+- Persistent vector database such as PostgreSQL/PGVector, Qdrant, or Pinecone
+- WhatsApp customer support
+- Website chat integration
+- Human escalation for complex queries
+- Complaint and refund routing
+- Business-hours awareness
+- Customer conversation history
+- Analytics and support dashboards
+- Multi-business / multi-tenant support
+- Business-specific configuration stored outside the FAQ
+- Automated FAQ document updates
+
+## 🎓 What This Project Demonstrates
 
 This project demonstrates practical implementation of:
 
-AI Agents
-Retrieval-Augmented Generation (RAG)
-Vector embeddings
-Semantic search
-LLM-based customer support
-Workflow automation
-Gmail integration
-Document ingestion
-AI response grounding
-Basic AI safety and hallucination prevention
-📌 Project Status
+- AI Agents
+- Retrieval-Augmented Generation (RAG)
+- Vector embeddings
+- Semantic search
+- LLM-based customer support
+- Workflow automation
+- Gmail integration
+- Document ingestion
+- AI response grounding
+- Basic AI safety and hallucination prevention
 
-Working Prototype
+## 📌 Project Status
+
+**Working Prototype**
 
 The system has been tested using real Gmail messages and successfully:
 
-Received a customer email.
-Retrieved relevant FAQ information.
-Generated an AI response.
-Replied to the original Gmail conversation.
-
-### 5. Important
-
-After pasting, click **Preview** before committing.
-
-You should see:
-
-**AI Customer Support Agent — RAG-Powered Email Automation**
-
-as a large heading, with proper headings, bullets, and diagrams.
-
-If the Preview looks good, **then click Commit changes**.
-
-Send me a screenshot of the **Preview** before you commit. I'll check the formatting for you.
+1. Received a customer email.
+2. Retrieved relevant FAQ information.
+3. Generated an AI response.
+4. Replied to the original Gmail conversation.
