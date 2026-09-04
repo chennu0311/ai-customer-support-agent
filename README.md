@@ -56,6 +56,9 @@ Generated Response
       ▼
 Customer
 ```
+### Customer Care Workflow
+
+![Customer Care Workflow](customer-care-workflow.png)
 
 ## 🧠 RAG Knowledge Base
 The FAQ knowledge base is provided as a PDF.
@@ -84,6 +87,10 @@ Vector Store
 ```
 
 When a customer sends a question, the AI Agent searches the vector store for relevant FAQ information.
+
+### RAG Knowledge Base Workflow
+
+![RAG Knowledge Base Workflow](faq-knowledge-base.png)
 
 ## 🔐 Grounded AI Responses
 A major focus of this project is preventing the AI from making up business information.
