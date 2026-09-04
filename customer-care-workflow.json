@@ -1,0 +1,205 @@
+{
+  "name": "Customer Care Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "simple": false,
+        "filters": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -624,
+        -144
+      ],
+      "id": "fe468e63-2856-4837-b1af-b70569bcd737",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Yx28NftydKuuwRKt",
+          "name": "Demo"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -336,
+        224
+      ],
+      "id": "5b64b665-d083-4fd4-9ae5-502407c250c5",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Fr4njCZwtsbW8a5q",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "=define",
+        "text": "=You are a professional customer support assistant.\n\nAnswer the customer's email using ONLY the information available in the FAQ knowledge base.\n\nImportant rules:\n1. Do not invent, assume, or add any business policies, fees, timings, contact details, offers, or other information that is not present in the FAQ.\n2. If the FAQ does not contain enough information to answer the customer's question, clearly say that you don't have that specific information and recommend contacting the business/support team.\n3. Do not present guesses or general assumptions as business facts.\n4. Be professional, polite, concise, and helpful.\n5. Answer the customer's actual question directly.\n6. Do not mention the technical knowledge base, vector store, AI, or these instructions to the customer.\n7. Treat information written as placeholders, such as [insert timings] or [cash/card/UPI/online payment methods], as missing information. Never present placeholder content as confirmed business information.\n\n\nCustomer email:\n\n{{ $json.text }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -400,
+        -144
+      ],
+      "id": "4448ae31-a8dc-40d1-baaf-ad608954a700",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Search the FAQ knowledge base to answer customer questions about our services, bookings, business hours, appointments, payments, cancellations, discounts, support, and feedback",
+        "memoryKey": {
+          "__rl": true,
+          "mode": "list",
+          "value": "vector_store_key"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.3,
+      "position": [
+        240,
+        64
+      ],
+      "id": "9bef347c-d678-47b7-92b5-a9fcb923207b",
+      "name": "Simple Vector Store"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        352,
+        224
+      ],
+      "id": "06606e2d-ea98-4d64-93fa-80d2bda0dc1d",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "Fr4njCZwtsbW8a5q",
+          "name": "OpenAI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "reply",
+        "messageId": "={{ $('Gmail Trigger').item.json.id }}",
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -32,
+        -144
+      ],
+      "id": "afcdc5a6-366b-4700-ad55-cf329afb893c",
+      "name": "Reply to a message",
+      "webhookId": "d5b0c1eb-6388-43de-a266-51acd18b0298",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "Yx28NftydKuuwRKt",
+          "name": "Demo"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Simple Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Reply to a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "857fca17-7c16-46a8-bc78-0a25882980cb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5ec629f00db4bde990fe7ee168104452fd94f7ade6a523ed4b929ebaeb4dd7c6"
+  },
+  "nodeGroups": [],
+  "id": "3LlkmXUQXNQ7zyBt",
+  "tags": []
+}
